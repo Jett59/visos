@@ -1,10 +1,10 @@
 all: boot.vbl load.vkl
 
 boot.vbl: clean-boot
-	nasm mbr/main.asm -o boot.vbl
+	nasm boot/main.asm -o boot.vbl
 
 load.vkl: clean-load
-	echo "todo: implement kernel loader compile"
+	nasm load/main.asm -o load.vkl
 
 clean-boot:
 	rm -f *.vbl
