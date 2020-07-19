@@ -2,5 +2,8 @@
 *.o
 *.obj
 
-#boot loaders
+#boot loader
 *.vbl
+
+#the kernel loader
+*.vkl
