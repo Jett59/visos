@@ -11,29 +11,6 @@ inc al
 cmp al, 90
 jl alphabetloop
 
-; set graphics mode
-mov ah, 0
-mov al, 0x13
-int 0x10
-
-; draw diagonal line
-mov cx, 0
-mov dx, 0
-drawpixelloop call drawpixel
-inc cx
-inc dx
-cmp cx, 100
-jl drawpixelloop
-
-drawpixel:
-    ;before calling this function CX = x, DX = y must be set
-	mov ah, 0x0C ;Write Pixel - https://en.wikipedia.org/wiki/INT_10H
-    mov al, 0x0B ;Light Cyan - https://en.wikipedia.org/wiki/BIOS_color_attributes
-    mov bh, 0x00 ;page to write to, page 0 is displayed by default
-	
-	int 0x10 ; int 0x10, 0x0C = draw pixel
-	ret
-
 printchar:
     ;before calling this function al must be set to the character to print
 	mov ah, 0x0E
