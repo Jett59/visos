@@ -1,4 +1,7 @@
-all: boot.vbl load.vkl
+all: combine
+
+combine: boot.vbl load.vkl
+	cat boot.vbl load.vkl > image.bin
 
 boot.vbl: clean-boot
 	nasm boot/main.asm -o boot.vbl
@@ -11,3 +14,6 @@ clean-boot:
 
 clean-load:
 	rm -f *.vkl
+
+test: combine
+	qemu-system-i386 image.bin

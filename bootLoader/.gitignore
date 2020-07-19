@@ -7,3 +7,6 @@
 
 #the kernel loader
 *.vkl
+
+#image
+*.bin
