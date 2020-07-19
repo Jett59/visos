@@ -1,13 +1,13 @@
 all: boot.vbl load.vkl
 
 boot.vbl: clean-boot
-
-
-load.vkl: load-clean
 	nasm mbr/main.asm -o loader.vkl
 
-boot-clean:
-	rm -f *.vkl
+load.vkl: clean-load
+	echo "todo: implement kernel loader compile"
 
-load-clean:
+clean-boot:
+	rm -f *.vbl
+
+clean-load:
 	rm -f *.vkl
