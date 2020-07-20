@@ -1,24 +1,23 @@
-
 printerr:
 	mov si, msg
 	putloop
 
 putloop:
-        MOV     AL,[SI]
-        ADD     SI,1            
-        CMP     AL,0
-        JE      fin
-        MOV     AH,0x0e         
-        MOV     BX,0       
-        INT     0x10           
-        JMP     putloop
+        mov     al,[si]
+        add     si,1            
+        cmp     al,0
+        je      fin
+        mov     ah,0x0e         
+        mov     bx,0       
+        int     0x10           
+        jmp     putloop
 
 fin:
-        HLT                     
-        JMP     fin  
+        hlt                     
+        jmp     fin  
 
 msg:
-        DB      0x0a, 0x0a      
-        DB      "error"
-        DB      0x0a            
-        DB      0
+        db      0x0a, 0x0a      
+        db      "error"
+        db      0x0a            
+        db      0
