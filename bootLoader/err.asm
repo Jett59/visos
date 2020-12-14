@@ -1,7 +1,5 @@
 printerr:
 	mov si, msg
-	putloop
-
 putloop:
         mov     al,[si]
         add     si,1            

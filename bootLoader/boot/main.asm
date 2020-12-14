@@ -4,15 +4,7 @@ bits 16
 jmp start
 
 %include "err.asm"
-
-printchar:
-    ; before calling this function al must be set to the character to print;
-	mov ah, 0x0E
-    mov bh, 0x00 ;page to write to, page 0 is displayed by default;
-	mov bl, 0x00
-	
-	int 0x10 ; int 0x10, 0x0E = print character in al
-	ret
+%include "stdio.asm"
 
 start:
 	mov ah, 0
@@ -20,12 +12,13 @@ start:
 	jc printerr
 
 	; draw text (will be overwritten by line)
-	mov al, 65
-	alphabetloop call printchar
-	inc al
-	cmp al, 91
-	jl alphabetloop
+	mov si, message
+	call printstr
 	ret
+
+message db "Boot started"
+db 0x0a
+db 0x00
 
 ; Padding to 510 bytes with 0s
 times 510-($-$$) db 0
