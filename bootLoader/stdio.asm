@@ -19,3 +19,31 @@ printchar:
     cmp al, 0x00
     jne printstr
     ret
+
+    ;disk i/o functions
+    preparedisk:
+    ;reset flopy
+xor ax,ax
+int 0x13
+jc printerr
+ret
+
+    readsectors:
+    ; dl, cl, al, and es registers all need to be set before calling this function
+    ; dl (drive), cl (initial segment), es (destination memory location), al (number of segments to read)
+    push ax
+    push es
+    push cx
+call preparedisk
+pop cx
+pop si
+pop ax
+
+xor dh,dh ; head
+mov ch,dh ; cylindar
+xor si, si
+mov es, si ; destination memory segment
+mov ah, 2 ; read mode
+int 0x13
+jc printerr
+ret
