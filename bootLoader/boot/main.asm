@@ -1,6 +1,7 @@
 org 0x7C00
 bits 16
 
+
 jmp start
 
 %include "stdio.asm"
