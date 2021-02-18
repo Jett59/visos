@@ -1,12 +1,12 @@
 SECTIONS {
     . = 0x7C00;
-    .boot : {
-        * (.boot)
+    .mbr : {
+        * (.mbr)
     }
-    .bootdata : {
-        * (.bootdata)
+    .mbrdata : {
+        * (.mbrdata)
     }
-    . = 0x7DFD;
+    . = 0x7DFE;
     .signature : {
         * (.signature)
     }

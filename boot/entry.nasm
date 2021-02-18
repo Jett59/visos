@@ -1,10 +1,10 @@
 [bits 16]
 
-section .bootdata
+section .mbrdata
 db "World!"
 db 0x00
 
-section .boot
+section .mbr
 global _boot
 _boot:
 hlt
@@ -12,4 +12,4 @@ db "Hello, "
 
 section .signature
 db 0x55
-db 0xAA
+db 0xaa
