@@ -4,6 +4,10 @@ section .text
 global _kernel_entry
 extern _boot_functions.setBG
 _kernel_entry:
+; setup the extra segment to point at graphics memory
+mov si, 0xB800 ; segment for text video ram
+mov es, si ; put this in the extra segment
+
 call _kern16_functions.cls ; clear the screen
 xor al, al ; clear al (background color stored in al, 0 = black)
 call _boot_functions.setBG ; set background color to black
@@ -17,14 +21,12 @@ _kern16_functions: ; 16bit kernel functions
 int 0x19 ; reboot if control flow reaches here
 global _kern16_functions.putchar
 .putchar: ; ah = either _screen.stdout or _screen.stderr, al = character to print
-mov si, 0xB800 ; segment for text video ram
-mov es, si ; put this in the extra segment
-mov si, [_screen.curser_pos] ; save curser position
+mov si, [_screen.cursor_pos] ; save cursor position
 add si, si ; double si to get the byte offset
 mov word [es:si],ax ; write character to screen
-mov si, [_screen.curser_pos] ; put original curser position in si
-inc si ; increment curser position
-mov [_screen.curser_pos], si ; write new curser position to memory
+mov si, [_screen.cursor_pos] ; put original cursor position in si
+inc si ; increment cursor position
+mov [_screen.cursor_pos], si ; write new cursor position to memory
 ret
 
 global _kern16_functions.puts
@@ -37,28 +39,24 @@ call _kern16_functions.putchar ; put char stored in al onto the screen with ah b
 pop si ; restore si
 inc si ; increment si for the next iteration
 jmp _kern16_functions.puts
-ret
 
 global _kern16_functions.cls
 .cls: ; clear the screen
-mov ax, ds
-mov es, ax ; store original ds
-mov ax, 0xB800
-mov ds, ax ; 0xB8000 is the address of the text video memory
 xor si, si ; segment = 0xB800, offset = 0
 mov cx, 4000 ; 2000 bytes is the size of the text video memory. Two bytes per character
-call _kern16_functions.clmem ; clear the video memory
-mov ax, es
-mov ds, ax ; restore original ds
+mov al, 0x00 ; set these bytes to zero
+call _kern16_functions.setmem ; clear the video memory
+; reset the cursor position
+mov byte [_screen.cursor_pos], 0x00 ; set cursor position to 0
 ret
 
-global _kern16_functions.clmem
-.clmem: ; clear memory. ds:si stores the start address, cx stores the size of the memory
-mov byte [ds:si], 0x00 ; clear byte at si
+global _kern16_functions.setmem
+.setmem: ; set a portion of memory to a single value. Es:si is the start address, cx is the number of bytes to set, al is the source byte
+mov byte [es:si], al ; set byte at es:si
 inc si ; increment pointer
 dec cx ; decrement counter
 cmp cx, 0x0000
-jg _kern16_functions.clmem
+jg _kern16_functions.setmem ; repeat if size is greater than zero
 ret
 
 global _kern16_functions.error ; fill the screen with red
@@ -75,7 +73,7 @@ ret
 
 section .data
 _screen:
-.curser_pos dw 0 ; curser position
+.cursor_pos dw 0 ; cursor position
 .stdout db 0x0A ; green
 .stderr db 0x40 ; red
 message db "Successfully activated kernel!"
