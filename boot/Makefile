@@ -8,8 +8,8 @@ image.bin: image.img
 %.o: %.nasm
 	nasm $(AFLAGS) $^ -o $@
 
-image.img: $(patsubst %.nasm,%.o,$(shell find -type f -name "*.nasm"))
-	ld.lld -T boot.ld -o image.img $^
+image.img: mbr.o kernel_entry.o
+	ld.lld -T boot.ld -o image.img mbr.o kernel_entry.o
 
 clean:
 	rm *.o image.img image.bin

@@ -5,7 +5,7 @@ global _kernel_entry
 extern _boot_functions.setBG
 _kernel_entry:
 mov si, message
-mov ah, byte [_screen.stdout] ; print to standard out
+mov ah, [_screen.stdout] ; print to standard out
 call _kern16_functions.puts ; print message stored in si
 mov al, 65
 mov ah, [_screen.stdout]
@@ -21,14 +21,14 @@ _kern16_functions: ; 16bit kernel functions
 int 0x19 ; reboot if control flow reaches here
 global _kern16_functions.putchar
 .putchar: ; ah = either _screen.stdout or _screen.stderr, al = character to print
-mov si, ds 
+mov si, ds
 mov es, si ; store original ds in es
 mov si, 0xB800 ; segment for text video ram
 mov ds, si ; store address of video ram in ds
 mov cx, [_screen.curser_pos] ; save curser position
 add cx, cx ; double cx to get the byte offset of the next character
-mov si, ax
-mov [ds:si],ax ; write character to screen
+mov si, cx
+mov word [ds:si],ax ; write character to screen
 mov si, [_screen.curser_pos] ; put original curser position in si
 inc si ; increment curser position
 mov [_screen.curser_pos], si ; write new curser position to memory
@@ -76,9 +76,7 @@ ret
 section .data
 _screen:
 .curser_pos dw 0 ; curser position
-.stdout db 0x20 ; green
+.stdout db 0x0A ; green
 .stderr db 0x40 ; red
-message db "Kernel successfully activated!"
-db 0x0a
-db 0x0d
+message db "Successfully activated kernel!"
 db 0x00
