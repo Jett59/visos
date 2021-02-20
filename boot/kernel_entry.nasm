@@ -66,6 +66,15 @@ cmp cx, 0x0000
 jg _kern16_functions.clmem
 ret
 
+global _kern16_functions.error ; fill the screen with red
+.error:
+    mov ax,0xb800
+    mov es,ax     ;Set video segment to 0xb800
+    mov ax,0x4020 ;colour + space character(0x20)
+    mov cx,2000   ;Number of cells to update 80*25=2000
+    xor di,di     ;Video offset starts at 0 (upper left of screen)
+    rep stosw     ;Store AX to CX # of words starting at ES:[DI]
+
 return:
 ret
 
