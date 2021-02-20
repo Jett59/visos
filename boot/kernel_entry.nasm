@@ -5,15 +5,11 @@ global _kernel_entry
 extern _boot_functions.setBG
 _kernel_entry:
 call _kern16_functions.cls ; clear the screen
+xor al, al ; clear al (background color stored in al, 0 = black)
+call _boot_functions.setBG ; set background color to black
 mov si, message
 mov ah, [_screen.stdout] ; print to standard out
 call _kern16_functions.puts ; print message stored in si
-mov al, 65
-mov ah, [_screen.stdout]
-call _kern16_functions.putchar
-jmp $
-xor si, si ; clear si
-call _boot_functions.setBG ; set background color to black
 hlt
 jmp $
 

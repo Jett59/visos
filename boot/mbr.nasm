@@ -18,7 +18,7 @@ mov byte [boot_drive], dl ; store boot device in memory
 
 ; main boot loader code
 _greeting:
-mov si, BGCol ; background color goes in si
+mov al, byte [BGCol] ; background color goes in si
 call _boot_functions.setBG ; set background color
 mov si, greeting_message
 call _boot_functions.print ; print contents of si, in this case, greeting message
@@ -48,10 +48,10 @@ inc si ; increment first parameter ready for next iteration
 jmp _boot_functions._print_loop
 
 global _boot_functions.setBG
-.setBG: ; set the background color
+.setBG: ; set the background color to what is stored in al
 mov ah, 0x0B ; bios set background/border color
 xor bh, bh ; bios function to set background/border color
-mov bl, byte [si] ; background color is stored in si
+mov bl, al ; background color is stored in al
 int 0x10 ; bios call
 ret
 
