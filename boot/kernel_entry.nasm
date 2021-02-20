@@ -4,6 +4,7 @@ section .text
 global _kernel_entry
 extern _boot_functions.setBG
 _kernel_entry:
+call _kern16_functions.cls ; clear the screen
 mov si, message
 mov ah, [_screen.stdout] ; print to standard out
 call _kern16_functions.puts ; print message stored in si
@@ -11,7 +12,6 @@ mov al, 65
 mov ah, [_screen.stdout]
 call _kern16_functions.putchar
 jmp $
-call _kern16_functions.cls ; clear the screen
 xor si, si ; clear si
 call _boot_functions.setBG ; set background color to black
 hlt
@@ -21,19 +21,15 @@ _kern16_functions: ; 16bit kernel functions
 int 0x19 ; reboot if control flow reaches here
 global _kern16_functions.putchar
 .putchar: ; ah = either _screen.stdout or _screen.stderr, al = character to print
-mov si, ds
-mov es, si ; store original ds in es
 mov si, 0xB800 ; segment for text video ram
-mov ds, si ; store address of video ram in ds
+mov es, si ; put this in the extra segment
 mov cx, [_screen.curser_pos] ; save curser position
 add cx, cx ; double cx to get the byte offset of the next character
 mov si, cx
-mov word [ds:si],ax ; write character to screen
+mov word [es:si],ax ; write character to screen
 mov si, [_screen.curser_pos] ; put original curser position in si
 inc si ; increment curser position
 mov [_screen.curser_pos], si ; write new curser position to memory
-mov si, es
-mov ds, si ; restore original ds
 ret
 
 global _kern16_functions.puts
