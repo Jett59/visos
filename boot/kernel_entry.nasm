@@ -19,9 +19,8 @@ global _kern16_functions.putchar
 .putchar: ; ah = either _screen.stdout or _screen.stderr, al = character to print
 mov si, 0xB800 ; segment for text video ram
 mov es, si ; put this in the extra segment
-mov cx, [_screen.curser_pos] ; save curser position
-add cx, cx ; double cx to get the byte offset of the next character
-mov si, cx
+mov si, [_screen.curser_pos] ; save curser position
+add si, si ; double si to get the byte offset
 mov word [es:si],ax ; write character to screen
 mov si, [_screen.curser_pos] ; put original curser position in si
 inc si ; increment curser position
