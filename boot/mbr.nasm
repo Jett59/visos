@@ -19,22 +19,22 @@ mov byte [boot_drive], dl ; store boot device in memory
 ; main boot loader code
 _greeting:
 mov si, BGCol ; background color goes in si
-call _standard_functions.setBG ; set background color
+call _boot_functions.setBG ; set background color
 mov si, greeting_message
-call _standard_functions.print ; print contents of si, in this case, greeting message
+call _boot_functions.print ; print contents of si, in this case, greeting message
 
 _read_kernel: ; read kernel from disk and jump to it!
 mov dl, byte [boot_drive] ; store boot device in dl
 mov si, kernel_read_packet ; dap to tell the bios how to read the kernel
-call _standard_functions.read_from_disk ; read kernel!
+call _boot_functions.read_from_disk ; read kernel!
 ; here goes! Into the kernel
 jmp _kernel_entry
 
 jmp error ; if control flow gets past the kernel jump
 
-_standard_functions: ; used to perform standard operations, such as printing to the screen
+_boot_functions: ; used to perform standard operations, such as printing to the screen
 int 0x19 ; reboot the machine if control flow reaches here
-global _standard_functions.print ; for access from outside the mbr
+global _boot_functions.print ; for access from outside the mbr. Note that for outsiders, this is a boot
 .print:
 mov ah, 0x0e ; bios command to print to screen
 xor bx, bx ; bh = page number, bl = color
@@ -45,9 +45,10 @@ je return
 int 0x10 ; bios interrupt to print char stored in al
 jc error ; call error in case of failier
 inc si ; increment first parameter ready for next iteration
-jmp _standard_functions._print_loop
+jmp _boot_functions._print_loop
 
-.setBG:
+global _boot_functions.setBG
+.setBG: ; set the background color
 mov ah, 0x0B ; bios set background/border color
 xor bh, bh ; bios function to set background/border color
 mov bl, byte [si] ; background color is stored in si
@@ -62,10 +63,11 @@ ret
 
 error: ; if an error occured
 mov si, error_message
-call _standard_functions.print ; print error message
+call _boot_functions.print ; print error message
 hlt
 jmp $ ; this stops the cpu by making it repeat the same instruction over and over again
 
+global return
 return:
 ret ; pop last element off the stack and jump to it
 
