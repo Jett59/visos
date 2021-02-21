@@ -5,7 +5,12 @@ void initialise_video_segment () {
     asm ("movw %di, %es"); // move it into es
 }
 
+void callaa(char ch){
+    cls;
+}
+
 void kernel_entry () {
     initialise_video_segment();
     cls;
+    callaa('A');
 }
