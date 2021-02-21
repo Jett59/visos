@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-m16 -ffreestanding -target i386-unknown-linux-elf --sysroot=./include
+CFLAGS=-m16 -ffreestanding -target i386-unknown-linux-elf --sysroot=./include/ -I ./include/
 AFLAGS=-felf
 
 all: image.bin
