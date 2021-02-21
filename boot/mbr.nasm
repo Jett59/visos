@@ -2,7 +2,7 @@
 
 section .mbr
 global _start
-extern _kernel_entry
+extern kernel_entry
 _start:
 ; setup the segments
 xor ax, ax
@@ -28,7 +28,7 @@ mov dl, byte [boot_drive] ; store boot device in dl
 mov si, kernel_read_packet ; dap to tell the bios how to read the kernel
 call _boot_functions.read_from_disk ; read kernel!
 ; here goes! Into the kernel
-jmp _kernel_entry
+jmp kernel_entry
 
 jmp error ; if control flow gets past the kernel jump
 
