@@ -1,3 +1,5 @@
+CC=clang
+CFLAGS=-m16 -ffreestanding -target i386-unknown-linux-elf --sysroot=./include
 AFLAGS=-felf
 
 all: image.bin
@@ -5,11 +7,11 @@ all: image.bin
 image.bin: image.img
 	objcopy -O binary image.img image.bin
 
-%.o: %.nasm
+%.obj: %.nasm
 	nasm $(AFLAGS) $^ -o $@
 
-image.img: mbr.o kernel_entry.o
-	ld.lld -T boot.ld -o image.img mbr.o kernel_entry.o
+image.img: mbr.obj _kernel_functions.obj kernel.o
+	ld.lld -T boot.ld -o image.img $^
 
 clean:
-	rm *.o image.img image.bin
+	rm *.o *.obj image.img image.bin
