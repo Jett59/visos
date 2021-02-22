@@ -2,7 +2,8 @@
 
 section .text
 global _kern16_putchar
-_kern16_putchar: ; ah = either _screen.stdout or _screen.stderr, al = character to print
+_kern16_putchar: ; al = character to print
+mov ah, [_screen.current_color] ; load current color into ah
 mov si, [_screen.cursor_pos] ; save cursor position
 add si, si ; double si to get the byte offset
 mov word [es:si],ax ; write character to screen
@@ -12,14 +13,14 @@ mov [_screen.cursor_pos], si ; write new cursor position to memory
 ret
 
 global _kern16_puts
-_kern16_puts: ; put string stored in si onto the screen with attributes specified by ah (see _kern16_functions.putchar for more details)
-mov al, [si] ; read si iinto al
+_kern16_puts: ; put string stored in si onto the screen.
+mov al, [ecx] ; read si iinto al
 cmp al, 0x00
 je return ; null terminator
-push si ; function call destroys si
+push ecx ; function call destroys ecx
 call _kern16_putchar ; put char stored in al onto the screen with ah being the attribute
-pop si ; restore si
-inc si ; increment si for the next iteration
+pop ecx ; restore ecx
+inc ecx ; increment si for the next iteration
 jmp _kern16_puts ; repeat
 
 global _kern16_cls
@@ -58,5 +59,4 @@ _screen:
 .cursor_pos dw 0 ; cursor position
 .stdout db 0x0A ; green
 .stderr db 0x40 ; red
-message db "Successfully activated kernel!"
-db 0x00
+.current_color db 0x0A ; green

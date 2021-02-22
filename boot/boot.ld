@@ -8,6 +8,7 @@ SECTIONS {
     .primary : {
         *(.text)
         *(.data)
+        * (.rodata.*)
         . = 0xFE00;
     } > primary
 }
