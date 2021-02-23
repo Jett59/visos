@@ -8,7 +8,8 @@ void initialise_video_segment () {
 void kernel_entry () {
     initialise_video_segment();
     cls;
-    puts("Successfully activated kernel!");
+    puts("Successfully activated kernel!\n");
+    puts("Welcome to ViSOS\n");
     for (;;){
         continue; // block forever
     }

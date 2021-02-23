@@ -3,6 +3,13 @@
 section .text
 global _kern16_putchar
 _kern16_putchar: ; al = character to print
+cmp al, 0x0A ; line feed
+jne __putchar_body ; continue with printing al
+; move to the next line and return
+call _kern16_newline
+ret
+
+__putchar_body:
 mov ah, [_screen.current_color] ; load current color into ah
 mov si, [_screen.cursor_pos] ; save cursor position
 add si, si ; double si to get the byte offset
@@ -10,6 +17,24 @@ mov word [es:si],ax ; write character to screen
 mov si, [_screen.cursor_pos] ; put original cursor position in si
 inc si ; increment cursor position
 mov [_screen.cursor_pos], si ; write new cursor position to memory
+ret
+
+global _kern16_newline
+_kern16_newline:
+push ax ; division modifies ax
+push dx ; and dx
+push cx ; and finally cx
+xor dx, dx ; dx:ax is the dividend. Only two byte division so dx must be zero
+mov ax, [_screen.cursor_pos] ; divide cursor position by 80 to get the line number
+mov cx, 80 ; 80 chars per line
+div cx ; perform division
+mov cx, 80 ; division destroys cx
+inc ax ; increase line number by 1
+mul cx ; division always rounds down. Multiply to get the next line start position
+mov [_screen.cursor_pos], ax ; story new curser position in screen structure
+pop cx ; restore cx
+pop dx ; restore dx
+pop ax ; restore ax
 ret
 
 global _kern16_puts
