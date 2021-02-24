@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-m16 -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
+CFLAGS=-m16 -ansi -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
 AFLAGS=-felf
 
 all: image.bin

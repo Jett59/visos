@@ -1,7 +1,7 @@
 #ifndef video_header_h
 #define video_header_h  "video.h"
 
-typedef struct {
+typedef struct __attribute__((__packed__)) {
     char character;
     char attribute;
 } video_cell;
