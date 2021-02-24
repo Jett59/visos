@@ -1,16 +1,15 @@
 #include <kernel16.h>
+#include <video.h>
 
-void initialise_video_segment () {
-    asm ("movw $0xb800, %di"); // video segment is located at 0xB800
-    asm ("movw %di, %es"); // move it into es
+void memset (void* ptr, size_t size, char value)
+{
+    char * working_ptr = ptr;
+    while(size --){
+        * (working_ptr+size) = value;
+    }
 }
 
-void kernel_entry () {
-    initialise_video_segment();
-    cls;
-    puts("Successfully activated kernel!\n");
-    puts("Welcome to ViSOS\n");
-    for (;;){
-        continue; // block forever
-    }
+void cls ()
+{
+    memset (screen.base, screen.columns*screen.rows*2, 0);
 }

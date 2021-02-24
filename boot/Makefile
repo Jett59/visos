@@ -10,7 +10,7 @@ image.bin: image.img
 %.obj: %.nasm
 	nasm $(AFLAGS) $^ -o $@
 
-image.img: mbr.obj _kernel_functions.obj kernel16.o
+image.img: mbr.obj vram.obj kernel16.o video.o main.o
 	ld.lld -T boot.ld -o image.img $^
 
 clean:
