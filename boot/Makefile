@@ -8,7 +8,12 @@ image.bin: image.img
 	objcopy -O binary image.img image.bin
 
 %.obj: %.nasm
-	nasm $(AFLAGS) $^ -o $@
+	@echo "nasm $@"
+	@nasm $(AFLAGS) $^ -o $@
+
+%.o: %.c
+	@echo "$(CC) $@"
+	@$(CC) $(CFLAGS) -c $^ -o $@
 
 image.img: mbr.obj vram.obj kernel16.o video.o main.o
 	ld.lld -T boot.ld -o image.img $^
