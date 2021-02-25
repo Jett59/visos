@@ -3,7 +3,7 @@
 
 typedef unsigned short size_t; // 16bit sizes
 
-void memset (void* ptr, size_t size, char value);
+void memset (void* ptr, char value, size_t size);
 void cls();
 void putchar (char ch);
 void puts (char* str);

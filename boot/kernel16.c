@@ -1,7 +1,7 @@
 #include <kernel16.h>
 #include <video.h>
 
-void memset (void* ptr, size_t size, char value)
+void memset (void* ptr, char value, size_t size)
 {
     char * working_ptr = ptr;
     while(size --){
@@ -11,7 +11,7 @@ void memset (void* ptr, size_t size, char value)
 
 void cls ()
 {
-    memset (screen.base, screen.columns*screen.rows*2, 0);
+    memset (screen.base, 0, screen.columns*screen.rows*2);
     screen.cursor_pos = 0;
 }
 

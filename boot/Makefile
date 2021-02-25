@@ -16,7 +16,8 @@ image.bin: image.img
 	@$(CC) $(CFLAGS) -c $^ -o $@
 
 image.img: mbr.obj vram.obj kernel16.o video.o main.o
-	ld.lld -T boot.ld -o image.img $^
+	@echo "ld.lld $^"
+	@ld.lld -T boot.ld -o image.img $^
 
 clean:
 	rm *.o *.obj image.img image.bin
