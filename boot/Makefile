@@ -5,7 +5,8 @@ AFLAGS=-felf
 all: image.bin
 
 image.bin: image.img
-	objcopy -O binary image.img image.bin
+	@echo "objcopy $@"
+	@objcopy -O binary image.img image.bin
 
 %.obj: %.nasm
 	@echo "nasm $@"
@@ -15,9 +16,9 @@ image.bin: image.img
 	@echo "$(CC) $@"
 	@$(CC) $(CFLAGS) -c $^ -o $@
 
-image.img: mbr.obj vram.obj kernel16.o video.o main.o
-	@echo "ld.lld $^"
+image.img: realmode/mbr.obj realmode/vram.obj realmode/kernel16.o realmode/video.o realmode/main.o
+	@echo "ld.lld $@"
 	@ld.lld -T boot.ld -o image.img $^
 
 clean:
-	rm *.o *.obj image.img image.bin
+	rm */*.o */*.obj image.img image.bin
