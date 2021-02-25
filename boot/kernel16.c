@@ -3,9 +3,16 @@
 
 void memset (void* ptr, char value, size_t size)
 {
-    char * working_ptr = ptr;
-    while(size --){
-        * (working_ptr+size) = value;
+    int * working_ptr = ptr;
+    size_t aligned_size = size >> 2; // divide size by four, since int is 32bit
+    int remaining_bytes = size - (aligned_size << 2); // get bytes that will be skipped by the (faster) aligned while loop
+    char * final_ptr = ptr+size-remaining_bytes; // char pointer, sets the last bytes (if any)
+    while (remaining_bytes --){
+        * (final_ptr+remaining_bytes) = value; // set the single byte to the value
+    }
+    int aligned_value = value * 0x01010101; // since one byte is two hex digits, multiplying this with 0x01010101 will make four bytes each of the same value as the one byte
+    while(aligned_size --) {
+        * (working_ptr+aligned_size) = aligned_value;
     }
 }
 
