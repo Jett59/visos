@@ -3,8 +3,8 @@
 void kernel_entry (void)
 {
     cls();
-    for(;;){
-        puts("Successfully activated kernel!\n");
+    print_stuff:
+    puts ("ViSOS\n");
     puts ("Welcome!\n");
-    }
+    goto print_stuff;
 }
