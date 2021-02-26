@@ -4,7 +4,7 @@
 void memcpy (void * out, const void * in, size_t count)
 {
     while (count--) {
-        * (out + count) = * (in + count);
+        * (((char *) out) + count) = * (((char *) in) + count);
     }
 }
 
@@ -29,6 +29,15 @@ void cls ()
     screen.cursor_pos = 0;
 }
 
+void scroll_down ()
+{
+    video_cell * buffer = screen.base + screen.columns * screen.rows;
+    memcpy (buffer, screen.base, screen.columns * screen.rows * 2);
+    memcpy (screen.base, buffer + screen.columns, screen.columns * screen.rows * 2);
+    memset (screen.base + screen.columns * (screen.rows - 1), 0, screen.columns * 2);
+    screen.cursor_pos -= screen.columns;
+}
+
 void newline()
 {
     int row = screen.cursor_pos/screen.columns;
@@ -38,15 +47,6 @@ void newline()
     {
         scroll_down ();
     }
-}
-
-void scroll_down ()
-{
-    video_cell * buffer = screen.base + screen.columns * screen.rows;
-    memcpy (buffer, screen.base, screen.columns * screen.rows * 2);
-    memcpy (screen.base, buffer + screen.columns, screen.columns * screen.rows * 2;
-    memset (screen.base + screen.columns * (screen.rows - 1), 0, screen.columns * 2);
-    screen.cursor_pos -= screen.columns;
 }
 
 void write_video_cell(video_cell cell)
