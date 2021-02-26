@@ -21,4 +21,7 @@ image.img: realmode/mbr.obj realmode/vram.obj realmode/kernel16.o realmode/video
 	@ld.lld -T boot.ld -o image.img $^
 
 clean:
-	rm */*.o */*.obj image.img image.bin
+	@echo "clean image"
+	@rm image.bin image.img
+	@echo "clean realmode/"
+	@rm realmode/*.o realmode/*.obj
