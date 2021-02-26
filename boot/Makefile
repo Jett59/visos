@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-m16 -ansi -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
+CFLAGS=-ansi -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
 AFLAGS=-felf
 
 all: image.bin
@@ -12,9 +12,9 @@ image.bin: image.img
 	@echo "nasm $@"
 	@nasm $(AFLAGS) $^ -o $@
 
-%.o: %.c
+realmode/%.o: realmode/%.c
 	@echo "$(CC) $@"
-	@$(CC) $(CFLAGS) -c $^ -o $@
+	@$(CC) -m16 $(CFLAGS) -c $^ -o $@
 
 image.img: realmode/mbr.obj realmode/vram.obj realmode/kernel16.o realmode/video.o realmode/main.o
 	@echo "ld.lld $@"

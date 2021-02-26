@@ -1,6 +1,13 @@
 #include <kernel16.h>
 #include <video.h>
 
+void memcpy (void * out, const void * in, size_t count)
+{
+    while (count--) {
+        * (out + count) = * (in + count);
+    }
+}
+
 void memset (void* ptr, char value, size_t size)
 {
     int * working_ptr = ptr;
@@ -27,6 +34,19 @@ void newline()
     int row = screen.cursor_pos/screen.columns;
     row++;
     screen.cursor_pos = row*screen.columns;
+    if (screen.cursor_pos >= screen.columns * screen.rows)
+    {
+        scroll_down ();
+    }
+}
+
+void scroll_down ()
+{
+    video_cell * buffer = screen.base + screen.columns * screen.rows;
+    memcpy (buffer, screen.base, screen.columns * screen.rows * 2);
+    memcpy (screen.base, buffer + screen.columns, screen.columns * screen.rows * 2;
+    memset (screen.base + screen.columns * (screen.rows - 1), 0, screen.columns * 2);
+    screen.cursor_pos -= screen.columns;
 }
 
 void write_video_cell(video_cell cell)
@@ -39,6 +59,10 @@ void write_video_cell(video_cell cell)
     video_cell * destinationCell = screen.base+screen.cursor_pos;
     *destinationCell = cell;
     screen.cursor_pos++;
+    if (screen.cursor_pos >= screen.columns * screen.rows)
+    {
+        scroll_down ();
+    }
 }
 
 void putchar (char ch)
