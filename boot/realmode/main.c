@@ -1,10 +1,11 @@
 #include <kernel16.h>
+#include <a20.h>
 
 void kernel_entry (void)
 {
     cls();
-    print_stuff:
     puts ("ViSOS\n");
     puts ("Welcome!\n");
-    goto print_stuff;
+    enable_a20 ();
+    for(;;){}
 }

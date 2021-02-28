@@ -17,19 +17,18 @@ call _prepare_interrupt
 ; restore original state
 popa
 pop ds
-ret ; finally leave this mess
+retd ; finally leave this mess
 
 _prepare_interrupt: ; push the segment and offset of the bios call onto the stack and use a retf to jump to it
 shl ax, 2 ; multiply ax by 4 to get the address of the interrupt handler
 mov bx, ax
 xor ax, ax
 mov ds, ax ; set ds to zero (segment for real mode interrupts)
-push word [bx+4] ; push the segment pointed to by the bios interrupt entry
+push word [bx+2] ; push the segment pointed to by the bios interrupt entry
 push word [bx] ; push the offset part
 call _load_registers ; load all bios registers from memory. This will not effect the bios interrupt as we already pushed it to the stack
 ; this will 'return' to the bios call, which will return to the caller of this function
 retf
-
 
 _load_registers: ; load all of the registers from the interrupt registers table
 mov ax, [interrupt_registers.ax]
