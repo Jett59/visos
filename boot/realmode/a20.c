@@ -55,7 +55,7 @@ void enable_a20 ()
     puts (status ? "false\n" : "true!\n");
     int loops = _A20_ENABLE_ATTEMPTS;
 
-puts ("About to begin a20 enable loop\n");
+puts ("Beginning a20 enable loop\n");
     while (loops--) {
         enable_a20_bios ();
         status = test_a20_disabled_short ();
