@@ -7,9 +7,9 @@ push dx
 mov dx, ax
 in al,dx
 pop dx
-ret
+retd
 
 global outb
 outb: ; write a byte to the port specified by the first argument
 out dx,al
-ret
+retd
