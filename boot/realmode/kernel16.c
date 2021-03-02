@@ -5,7 +5,7 @@
 void memcpy (void * out, const void * in, size_t count)
 {
     while (count--) {
-        * (((char *) out) + count) = * (((char *) in) + count);
+        * (((u8 *) out) + count) = * (((u8 *) in) + count);
     }
 }
 
