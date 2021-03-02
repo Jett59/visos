@@ -1,11 +1,13 @@
 #ifndef _bios_functions_h
 #define _bios_functions_h  "bios functions"
 
+#include <types.h>
+
 typedef union {
-    short x;
+    u16 x;
     struct __attribute__ ((packed)) {
-        char low;
-        char high;
+        u8 low;
+        u8 high;
     } components;
 } bios_reg;
 
@@ -18,6 +20,6 @@ typedef struct __attribute__ ((packed)) {
 
 extern bios_regs interrupt_registers;
 
-void intcall (char interrupt_num);
+void intcall (u8 interrupt_num);
 
 #endif

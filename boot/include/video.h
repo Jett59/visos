@@ -1,9 +1,11 @@
 #ifndef video_header_h
 #define video_header_h  "video.h"
 
+#include <types.h>
+
 typedef struct __attribute__((__packed__)) {
     char character;
-    char attribute;
+    u8 attribute;
 } video_cell;
 // screen structure
 /*
@@ -14,12 +16,12 @@ typedef struct __attribute__((__packed__)) {
 */
 typedef struct {
     video_cell * const base;
-    unsigned short cursor_pos;
-    unsigned char stdout;
-    unsigned char stderr;
-    unsigned char current_color;
-    unsigned char columns;
-    unsigned char rows;
+    size_t cursor_pos;
+    u8 stdout;
+    u8 stderr;
+    u8 current_color;
+    u8 columns;
+    u8 rows;
 } Screen;
 
 // main screen

@@ -1,9 +1,9 @@
 #ifndef _io_functions_h
 #define _io_functions_h  "io functions"
 
-unsigned char inb (unsigned short port);
-void outb (unsigned char val, unsigned short port);
+#include <types.h>
 
-void io_delay ();
+u8 inb (u16 port);
+void outb (u8 val, u16 port);
 
 #endif

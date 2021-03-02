@@ -11,8 +11,8 @@ int read_es (size_t offset);
 int read_fs (size_t offset);
 int read_gs (size_t offset);
 
-void write_es (size_t offset, int val);
-void write_fs (size_t offset, int val);
-void write_gs (size_t offset, int val);
+void write_es (size_t offset, u32 val);
+void write_fs (size_t offset, u32 val);
+void write_gs (size_t offset, u32 val);
 
 #endif
