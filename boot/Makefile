@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-mregparm=3 -std=c11 -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
+CFLAGS=-S -mregparm=3 -std=c11 -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
 AFLAGS=-felf
 
 all: image.bin
@@ -16,7 +16,7 @@ realmode/%.o: realmode/%.c
 	@echo "$(CC) $@"
 	@$(CC) -m16 $(CFLAGS) -c $^ -o $@
 
-image.img: realmode/mbr.obj realmode/vram.obj realmode/bios.obj realmode/io.obj realmode/memory.obj realmode/descriptors.o realmode/kernel16.o realmode/video.o realmode/a20.o realmode/main.o
+image.img: realmode/mbr.obj realmode/vram.obj realmode/bios.obj realmode/memory.obj realmode/io.o realmode/kernel16.o realmode/pm.o realmode/video.o realmode/a20.o realmode/main.o
 	@echo "ld.lld $@"
 	@ld.lld -T boot.ld -o image.img $^
 

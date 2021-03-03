@@ -8,6 +8,4 @@ typedef struct __attribute__ ((packed)) {
     u32 ptr;
 } descriptor_ptr;
 
-void load_gdt (descriptor_ptr ptr);
-
 #endif
