@@ -7,5 +7,8 @@ void kernel_entry (void)
     puts ("ViSOS\n");
     puts ("Welcome!\n");
     enable_a20 ();
-    for(;;){}
+    puts ("making last preparations and transitioning to protected mode!\n");
+    enter_protected_mode ();
+    puts ("OOPS! Something happened and transition to protected mode failed\n");
+    for (;;){}
 }

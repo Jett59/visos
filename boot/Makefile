@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-S -mregparm=3 -std=c11 -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
+CFLAGS=-mregparm=3 -std=c11 -ffreestanding -target x86_64-unknown-linux-elf --sysroot=./include/ -I ./include/ -nostdinc
 AFLAGS=-felf
 
 all: image.bin

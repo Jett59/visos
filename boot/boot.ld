@@ -9,6 +9,9 @@ SECTIONS {
         *(.text)
         *(.data)
         * (.rodata.*)
+        bss_begin = .;
+        * (.bss);
+        bss_end = .;
         . = 0xFE00;
     } > primary
     .vram : {

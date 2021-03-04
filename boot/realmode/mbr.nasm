@@ -3,6 +3,8 @@
 section .mbr
 global _start
 extern kernel_entry
+extern bss_begin
+extern bss_end
 _start:
 ; setup the segments
 xor ax, ax
@@ -21,6 +23,17 @@ _read_kernel: ; read kernel from disk and jump to it!
 mov dl, byte [boot_drive] ; store boot device in dl
 mov si, kernel_read_packet ; dap to tell the bios how to read the kernel
 call _boot_functions.read_from_disk ; read kernel!
+
+_zero_bss: ; zero the bss section of the kernel
+mov si, bss_begin ; store beginning of bss section
+.loop:
+mov byte [ds:si], 0x00
+cmp si, bss_end
+je enter_kernel
+inc si
+jmp _zero_bss.loop ; go onto the next byte
+
+enter_kernel:
 ; here goes! Into the kernel
 jmp kernel_entry
 
