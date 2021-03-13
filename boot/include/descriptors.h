@@ -32,4 +32,6 @@ SEG_PRIV(3)     | SEG_CODE_EXRD
 SEG_LONG(0)     | SEG_SIZE(1) | SEG_GRAN(1) | \
 SEG_PRIV(3)     | SEG_DATA_RDWR
 
+u64 create_descriptor (u32 base, u32 limit, u16 flag);
+
 #endif

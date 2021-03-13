@@ -16,7 +16,7 @@ realmode/%.o: realmode/%.c
 	@echo "$(CC) $@"
 	@$(CC) -m16 $(CFLAGS) -c $^ -o $@
 
-image.img: realmode/mbr.obj realmode/vram.obj realmode/bios.obj realmode/memory.obj realmode/io.o realmode/kernel16.o realmode/pm.o realmode/video.o realmode/a20.o realmode/main.o realmode/pmjump.obj
+image.img: realmode/mbr.obj realmode/vram.obj realmode/bios.obj realmode/memory.obj realmode/io.o realmode/kernel16.o realmode/gdt.o realmode/pm.o realmode/video.o realmode/a20.o realmode/main.o realmode/pmjump.obj
 	@echo "ld.lld $@"
 	@ld.lld -T boot.ld -o image.img $^
 
