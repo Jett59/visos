@@ -28,18 +28,7 @@ mov ecx, eax
 mov esi, eax
 mov edi, eax
 
-mov esi, 0xB8000
-mov ecx, 2000
-clear_screen:
-mov dword [esi], 0
-add esi, 4
-dec ecx
-cmp ecx, 0
-je hlt
-jmp clear_screen
-
 ; just hlt for now
 hlt:
-mov word [dword 0xB8000], 0x0a02
 hlt
 jmp hlt
