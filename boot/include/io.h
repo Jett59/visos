@@ -6,4 +6,6 @@
 u8 inb (u16 port);
 void outb (u8 val, u16 port);
 
+void io_delay ();
+
 #endif

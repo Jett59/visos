@@ -7,6 +7,7 @@ void memset (void* ptr, u8 value, size_t size);
 void cls();
 void putchar (char ch);
 void puts (char* str);
+void puthex (u64 num);
 
 void enter_protected_mode ();
 #endif

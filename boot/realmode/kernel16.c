@@ -2,6 +2,8 @@
 #include <io.h>
 #include <video.h>
 
+static char num_conversion_table [] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+
 void memcpy (void * out, const void * in, size_t count)
 {
     while (count--) {
@@ -83,5 +85,14 @@ void puts (char* str)
         cell.character = *str;
         write_video_cell (cell);
         str++;
+    }
+}
+
+void puthex (u64 num)
+{
+    puts ("0x");
+    while (num){
+        putchar (num_conversion_table[num & 0x0F]);
+        num /= 16;
     }
 }
