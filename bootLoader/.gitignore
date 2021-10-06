@@ -1,0 +1,12 @@
+#object files
+*.o
+*.obj
+
+#boot loader
+*.vbl
+
+#the kernel loader
+*.vkl
+
+#image
+*.bin
